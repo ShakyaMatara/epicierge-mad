@@ -4,6 +4,7 @@ import 'restaurantmenu.dart'; // Assuming this is where your RestaurantMenu widg
 import 'profile.dart'; // Import the ProfilePage widget
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
+import 'favourites.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,11 +12,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final bool isDarkMode = themeProvider.isDarkMode;  // Fix: added isDarkMode variable here
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('EPICIERGE'),
-        backgroundColor: themeProvider.isDarkMode ? Colors.grey[900] : Colors.orangeAccent,
+        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.orangeAccent, // Background color based on dark mode
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -61,18 +63,6 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Wrap(
-                spacing: 8.0,
-                children: <Widget>[
-                  FilterTag(text: 'Vegan'),
-                  FilterTag(text: 'Gluten-Free'),
-                  FilterTag(text: 'Popular'),
-                  FilterTag(text: 'New'),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -109,12 +99,17 @@ class HomePage extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Reservations'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favourites'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
+        currentIndex: 0, // Set the current index to default to Home
+        selectedItemColor: isDarkMode ? Colors.orangeAccent : Colors.black, // Color for selected item based on dark mode
+        unselectedItemColor: isDarkMode ? Colors.grey[500] : Colors.grey, // Color for unselected items
+        backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white, // Background color of BottomNavigationBar
         onTap: (index) {
           switch (index) {
             case 0:
-            // Navigate to Home page (if needed)
+            // Navigate to Home page
               break;
             case 1:
               Navigator.push(
@@ -125,7 +120,14 @@ class HomePage extends StatelessWidget {
               );
               break;
             case 2:
-            // Navigate to Profile page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FavouritesPage(),
+                ),
+              );
+              break;
+            case 3:
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -152,7 +154,7 @@ class FilterButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        backgroundColor: themeProvider.isDarkMode ? Colors.grey[700] : Colors.orangeAccent,
+        backgroundColor: themeProvider.isDarkMode ? Colors.grey[700] : Colors.orangeAccent, // Button color based on dark mode
       ),
       child: Text(text),
     );
@@ -170,7 +172,7 @@ class FilterTag extends StatelessWidget {
 
     return Chip(
       label: Text(text),
-      backgroundColor: themeProvider.isDarkMode ? Colors.grey[700] : Colors.orangeAccent,
+      backgroundColor: themeProvider.isDarkMode ? Colors.grey[700] : Colors.orangeAccent, // Chip color based on dark mode
     );
   }
 }
@@ -181,7 +183,8 @@ class FeaturedItem extends StatelessWidget {
   final String description;
   final VoidCallback onTap;
 
-  const FeaturedItem({super.key,
+  const FeaturedItem({
+    super.key,
     required this.image,
     required this.title,
     required this.description,

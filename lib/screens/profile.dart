@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled4/screens/reservations.dart';
 import 'homepage.dart';
+import 'favourites.dart';
 import 'theme_provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -96,24 +97,27 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 3, // Profile page is at index 2
+        selectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Reservations'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favourites'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomePage(),
                 ),
               );
               break;
-              break;
             case 1:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ReservationsPage(),
@@ -121,13 +125,15 @@ class ProfilePage extends StatelessWidget {
               );
               break;
             case 2:
-            // Navigate to Profile page
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => const FavouritesPage(),
                 ),
               );
+              break;
+            case 3:
+            // Already on the Profile page, no need to navigate
               break;
           }
         },

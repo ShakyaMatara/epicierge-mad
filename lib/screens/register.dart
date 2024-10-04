@@ -191,9 +191,18 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
                     ),
                     const SizedBox(height: 20),
-                    RoundedButton(
-                      btnText: "Create Account",
-                      onBtnPressed: () => createAccountPressed(),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDarkMode ? Colors.grey[800] : Colors.orangeAccent,
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text('Sign up'),
                     ),
                     const SizedBox(height: 20),
                     TextButton(
